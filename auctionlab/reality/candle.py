@@ -13,7 +13,7 @@ class Candle:
     high: float
     low: float
     close: float
-    volume: float
+    volume: float | None = None
 
     @property
     def bullish(self) -> bool:
