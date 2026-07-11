@@ -1,33 +1,36 @@
 from auctionlab.observation.swing import Swing
 from auctionlab.reality.bar_series import BarSeries
+from auctionlab.reality.window_iterator import windows
 
 
 def detect_swings(bars: BarSeries) -> list[Swing]:
     swings: list[Swing] = []
 
-    for i in range(1, len(bars) - 1):
-        prev = bars[i - 1]
-        cur = bars[i]
-        nxt = bars[i + 1]
-
-        if cur.high > prev.high and cur.high > nxt.high:
+    for index, window in enumerate(windows(bars), start=1):
+        if (
+            window.current.high > window.previous.high
+            and window.current.high > window.next.high
+        ):
             swings.append(
                 Swing(
-                    timestamp=cur.timestamp,
+                    timestamp=window.current.timestamp,
                     name="Swing High",
-                    candle=cur,
-                    index=i,
+                    candle=window.current,
+                    index=index,
                     is_high=True,
                 )
             )
 
-        if cur.low < prev.low and cur.low < nxt.low:
+        if (
+            window.current.low < window.previous.low
+            and window.current.low < window.next.low
+        ):
             swings.append(
                 Swing(
-                    timestamp=cur.timestamp,
+                    timestamp=window.current.timestamp,
                     name="Swing Low",
-                    candle=cur,
-                    index=i,
+                    candle=window.current,
+                    index=index,
                     is_high=False,
                 )
             )
