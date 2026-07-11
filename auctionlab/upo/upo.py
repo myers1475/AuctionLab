@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 
@@ -13,4 +13,4 @@ class UPOStatus(Enum):
 @dataclass(frozen=True)
 class UPO:
     created: datetime
-    status: UPOStatus = field(default=UPOStatus.ACTIVE, kw_only=True)
+    status: UPOStatus
