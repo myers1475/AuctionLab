@@ -20,6 +20,18 @@ class TradingSession:
         return min(bar.low for bar in self.bars)
 
     @property
+    def open(self) -> float:
+        return self.bars.first.open
+
+    @property
+    def close(self) -> float:
+        return self.bars.last.close
+
+    @property
+    def range(self) -> float:
+        return self.high - self.low
+
+    @property
     def initial_balance(self) -> BarSeries:
         start = self.bars.first.timestamp
 
