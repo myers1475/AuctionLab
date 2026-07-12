@@ -1,0 +1,13 @@
+from __future__ import annotations
+
+from auctionlab.observation.trading_day import TradingDay
+
+
+def previous_day(
+    days: list[TradingDay],
+    current_index: int,
+) -> TradingDay:
+    if current_index == 0:
+        raise ValueError("First trading day has no previous day.")
+
+    return days[current_index - 1]
