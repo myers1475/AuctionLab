@@ -12,6 +12,7 @@ from auctionlab.inference.control import Control
 from auctionlab.replay.replay_engine import ReplayEngine
 from auctionlab.replay.snapshot_factory import build_snapshot
 from auctionlab.upo.previous_day_builder import previous_day_levels
+from auctionlab.upo.previous_week_builder import build_previous_week
 
 
 def main():
@@ -22,12 +23,21 @@ def main():
 
     engine = ReplayEngine()
 
+    current_day = days[1]
+
     previous_day = previous_day_levels(
         days[0],
-        days[1],
+        current_day,
     )
 
-    current_day = days[1]
+    #
+    # TEMPORARY
+    # Replace these values later with an actual previous-week builder.
+    #
+    previous_week = build_previous_week(
+        high=25500.00,
+        low=24800.00,
+    )
 
     swings = detect_swings(current_day.bars)
 
@@ -60,6 +70,16 @@ def main():
                     price=previous_day.low,
                     source=previous_day,
                 ),
+                Objective(
+                    kind="Previous Week High",
+                    price=previous_week.high,
+                    source=previous_week,
+                ),
+                Objective(
+                    kind="Previous Week Low",
+                    price=previous_week.low,
+                    source=previous_week,
+                ),
             ]
         )
 
@@ -69,7 +89,7 @@ def main():
             active_upos=ActiveUPOs(
                 swings=visible_swings,
                 previous_days=(previous_day,),
-                previous_weeks=(),
+                previous_weeks=(previous_week,),
                 fvgs=(),
                 ifvgs=(),
             ),
@@ -83,14 +103,17 @@ def main():
     print()
     print("Replay Summary")
     print("----------------------------")
-    print(f"Trading Day             : {current_day.date}")
-    print(f"Bars                    : {len(current_day.bars)}")
-    print(f"Swings                  : {len(swings)}")
-    print(f"Previous Day High       : {previous_day.high}")
-    print(f"Previous Day Low        : {previous_day.low}")
-    print(f"Snapshots               : {len(engine.snapshots)}")
-    print(f"Latest Snapshot Swings  : {len(latest.active_upos.swings)}")
-    print(f"Previous Day UPOs       : {len(latest.active_upos.previous_days)}")
+    print(f"Trading Day              : {current_day.date}")
+    print(f"Bars                     : {len(current_day.bars)}")
+    print(f"Swings                   : {len(swings)}")
+    print(f"Previous Day High        : {previous_day.high}")
+    print(f"Previous Day Low         : {previous_day.low}")
+    print(f"Previous Week High       : {previous_week.high}")
+    print(f"Previous Week Low        : {previous_week.low}")
+    print(f"Snapshots                : {len(engine.snapshots)}")
+    print(f"Snapshot Swings          : {len(latest.active_upos.swings)}")
+    print(f"Snapshot Previous Days   : {len(latest.active_upos.previous_days)}")
+    print(f"Snapshot Previous Weeks  : {len(latest.active_upos.previous_weeks)}")
 
 
 if __name__ == "__main__":
