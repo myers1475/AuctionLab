@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from auctionlab.research.hypothesis import Hypothesis
 
 
@@ -9,8 +7,7 @@ def build_hypothesis(
     prediction: str,
 ) -> Hypothesis:
 
-    return Hypothesis(
-        created=datetime.now(),
+    return Hypothesis.create(
         observation=observation,
         inference=inference,
         prediction=prediction,
