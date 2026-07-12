@@ -9,6 +9,8 @@ from auctionlab.research.hypothesis import Hypothesis
 class ActiveHypothesis:
     hypothesis: Hypothesis
 
+    entry_price: float
+
     bars_elapsed: int = 0
 
     mae: float = 0.0

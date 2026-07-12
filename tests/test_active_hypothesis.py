@@ -12,8 +12,10 @@ def test_active_hypothesis():
 
     active = ActiveHypothesis(
         hypothesis=hypothesis,
+        entry_price=100.0,
     )
 
+    assert active.entry_price == 100.0
     assert active.bars_elapsed == 0
     assert active.mae == 0.0
     assert active.mfe == 0.0
