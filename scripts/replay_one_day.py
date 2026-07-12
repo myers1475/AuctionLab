@@ -34,24 +34,25 @@ def main():
 
     current_day = days[1]
 
-    previous_day = previous_day_levels(
-        days[0],
-        current_day,
+    previous_day = previous_day_levels(days[0], current_day)
+    previous_week = previous_week_levels(weeks[0])
+
+    asia = detect_session_levels(
+        build_session(
+            current_day,
+            "Asia",
+            time(20, 0),
+            time(23, 59),
+        )
     )
 
-    previous_week = previous_week_levels(
-        weeks[0],
-    )
-
-    asia_session = build_session(
-        current_day,
-        "Asia",
-        time(20, 0),
-        time(23, 59),
-    )
-
-    asia_levels = detect_session_levels(
-        asia_session,
+    new_york = detect_session_levels(
+        build_session(
+            current_day,
+            "New York",
+            time(9, 30),
+            time(16, 0),
+        )
     )
 
     swings = detect_swings(current_day.bars)
@@ -59,9 +60,7 @@ def main():
     for i, bar in enumerate(current_day.bars):
 
         visible_swings = tuple(
-            swing
-            for swing in swings
-            if swing.index <= i
+            swing for swing in swings if swing.index <= i
         )
 
         objectives = [
@@ -75,36 +74,14 @@ def main():
 
         objectives.extend(
             [
-                Objective(
-                    kind="Previous Day High",
-                    price=previous_day.high,
-                    source=previous_day,
-                ),
-                Objective(
-                    kind="Previous Day Low",
-                    price=previous_day.low,
-                    source=previous_day,
-                ),
-                Objective(
-                    kind="Previous Week High",
-                    price=previous_week.high,
-                    source=previous_week,
-                ),
-                Objective(
-                    kind="Previous Week Low",
-                    price=previous_week.low,
-                    source=previous_week,
-                ),
-                Objective(
-                    kind="Asia High",
-                    price=asia_levels.high,
-                    source=asia_levels,
-                ),
-                Objective(
-                    kind="Asia Low",
-                    price=asia_levels.low,
-                    source=asia_levels,
-                ),
+                Objective("Previous Day High", previous_day.high, previous_day),
+                Objective("Previous Day Low", previous_day.low, previous_day),
+                Objective("Previous Week High", previous_week.high, previous_week),
+                Objective("Previous Week Low", previous_week.low, previous_week),
+                Objective("Asia High", asia.high, asia),
+                Objective("Asia Low", asia.low, asia),
+                Objective("New York High", new_york.high, new_york),
+                Objective("New York Low", new_york.low, new_york),
             ]
         )
 
@@ -128,19 +105,17 @@ def main():
     print()
     print("Replay Summary")
     print("----------------------------")
-    print(f"Trading Day              : {current_day.date}")
-    print(f"Bars                     : {len(current_day.bars)}")
-    print(f"Swings                   : {len(swings)}")
-    print(f"Previous Day High        : {previous_day.high}")
-    print(f"Previous Day Low         : {previous_day.low}")
-    print(f"Previous Week High       : {previous_week.high}")
-    print(f"Previous Week Low        : {previous_week.low}")
-    print(f"Asia High               : {asia_levels.high}")
-    print(f"Asia Low                : {asia_levels.low}")
-    print(f"Snapshots                : {len(engine.snapshots)}")
-    print(f"Snapshot Swings          : {len(latest.active_upos.swings)}")
-    print(f"Snapshot Previous Days   : {len(latest.active_upos.previous_days)}")
-    print(f"Snapshot Previous Weeks  : {len(latest.active_upos.previous_weeks)}")
+    print(f"Trading Day             : {current_day.date}")
+    print(f"Bars                    : {len(current_day.bars)}")
+    print(f"Swings                  : {len(swings)}")
+    print(f"PDH / PDL               : {previous_day.high} / {previous_day.low}")
+    print(f"PWH / PWL               : {previous_week.high} / {previous_week.low}")
+    print(f"Asia                    : {asia.high} / {asia.low}")
+    print(f"New York                : {new_york.high} / {new_york.low}")
+    print(f"Snapshots               : {len(engine.snapshots)}")
+    print(f"Snapshot Swings         : {len(latest.active_upos.swings)}")
+    print(f"Snapshot Previous Days  : {len(latest.active_upos.previous_days)}")
+    print(f"Snapshot Previous Weeks : {len(latest.active_upos.previous_weeks)}")
 
 
 if __name__ == "__main__":
