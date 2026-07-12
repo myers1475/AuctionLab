@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 
-from auctionlab.research.nearest_upside_rule import NearestUpsideRule
+from auctionlab.research.nearest_upside_rule import (
+    NearestUpsideRule,
+)
 
 
 @dataclass(frozen=True)
@@ -25,17 +27,17 @@ def test_rule_creates_hypothesis():
         ),
     )
 
-    hypothesis = NearestUpsideRule().evaluate(snapshot)
+    hypotheses = NearestUpsideRule().evaluate(snapshot)
 
-    assert hypothesis is not None
-    assert hypothesis.prediction == "Price reaches 110"
+    assert len(hypotheses) == 1
+    assert hypotheses[0].prediction == "Price reaches 110"
 
 
-def test_rule_returns_none():
+def test_rule_returns_empty():
 
     snapshot = FakeSnapshot(
         current_price=100,
         nearest_objective=None,
     )
 
-    assert NearestUpsideRule().evaluate(snapshot) is None
+    assert NearestUpsideRule().evaluate(snapshot) == []

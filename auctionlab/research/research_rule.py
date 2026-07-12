@@ -11,4 +11,5 @@ class ResearchRule(Protocol):
     def evaluate(
         self,
         snapshot: MarketSnapshot,
-    ) -> Hypothesis | None: ...
+    ) -> list[Hypothesis]:
+        ...
