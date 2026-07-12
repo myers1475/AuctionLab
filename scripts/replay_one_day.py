@@ -34,8 +34,14 @@ def main():
 
     current_day = days[1]
 
-    previous_day = previous_day_levels(days[0], current_day)
-    previous_week = previous_week_levels(weeks[0])
+    previous_day = previous_day_levels(
+        days[0],
+        current_day,
+    )
+
+    previous_week = previous_week_levels(
+        weeks[0],
+    )
 
     asia = detect_session_levels(
         build_session(
@@ -60,7 +66,9 @@ def main():
     for i, bar in enumerate(current_day.bars):
 
         visible_swings = tuple(
-            swing for swing in swings if swing.index <= i
+            swing
+            for swing in swings
+            if swing.index <= i
         )
 
         objectives = [
@@ -74,14 +82,46 @@ def main():
 
         objectives.extend(
             [
-                Objective("Previous Day High", previous_day.high, previous_day),
-                Objective("Previous Day Low", previous_day.low, previous_day),
-                Objective("Previous Week High", previous_week.high, previous_week),
-                Objective("Previous Week Low", previous_week.low, previous_week),
-                Objective("Asia High", asia.high, asia),
-                Objective("Asia Low", asia.low, asia),
-                Objective("New York High", new_york.high, new_york),
-                Objective("New York Low", new_york.low, new_york),
+                Objective(
+                    kind="Previous Day High",
+                    price=previous_day.high,
+                    source=previous_day,
+                ),
+                Objective(
+                    kind="Previous Day Low",
+                    price=previous_day.low,
+                    source=previous_day,
+                ),
+                Objective(
+                    kind="Previous Week High",
+                    price=previous_week.high,
+                    source=previous_week,
+                ),
+                Objective(
+                    kind="Previous Week Low",
+                    price=previous_week.low,
+                    source=previous_week,
+                ),
+                Objective(
+                    kind="Asia High",
+                    price=asia.high,
+                    source=asia,
+                ),
+                Objective(
+                    kind="Asia Low",
+                    price=asia.low,
+                    source=asia,
+                ),
+                Objective(
+                    kind="New York High",
+                    price=new_york.high,
+                    source=new_york,
+                ),
+                Objective(
+                    kind="New York Low",
+                    price=new_york.low,
+                    source=new_york,
+                ),
             ]
         )
 
