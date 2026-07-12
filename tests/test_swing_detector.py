@@ -5,7 +5,7 @@ from auctionlab.reality.bar_series import BarSeries
 from auctionlab.reality.candle import Candle
 
 
-def make_bar(i, high, low):
+def make_bar(i, high=10, low=5):
     return Candle(
         timestamp=datetime(2026, 1, 1) + timedelta(minutes=5 * i),
         open=(high + low) / 2,
@@ -17,35 +17,43 @@ def make_bar(i, high, low):
 
 def test_detects_one_swing_high():
 
-    bars = BarSeries(
-        [
-            make_bar(0, 10, 5),
-            make_bar(1, 11, 5),
-            make_bar(2, 15, 5),
-            make_bar(3, 11, 5),
-            make_bar(4, 10, 5),
-        ]
-    )
+    bars = []
 
-    swings = detect_swings(bars)
+    # Build enough history for ATR(14)
+    for i in range(20):
+        bars.append(make_bar(i))
 
-    assert len(swings) == 1
-    assert swings[0].is_high
+    # Create a valid N=2 swing high at index 15
+    bars[13] = make_bar(13, high=11)
+    bars[14] = make_bar(14, high=12)
+    bars[15] = make_bar(15, high=20)
+    bars[16] = make_bar(16, high=12)
+    bars[17] = make_bar(17, high=11)
+
+    swings = detect_swings(BarSeries(bars))
+
+    highs = [s for s in swings if s.is_high]
+
+    assert len(highs) == 1
+    assert highs[0].index == 15
 
 
 def test_detects_one_swing_low():
 
-    bars = BarSeries(
-        [
-            make_bar(0, 10, 10),
-            make_bar(1, 10, 9),
-            make_bar(2, 10, 5),
-            make_bar(3, 10, 9),
-            make_bar(4, 10, 10),
-        ]
-    )
+    bars = []
 
-    swings = detect_swings(bars)
+    for i in range(20):
+        bars.append(make_bar(i))
 
-    assert len(swings) == 1
-    assert not swings[0].is_high
+    bars[13] = make_bar(13, low=9)
+    bars[14] = make_bar(14, low=8)
+    bars[15] = make_bar(15, low=1)
+    bars[16] = make_bar(16, low=8)
+    bars[17] = make_bar(17, low=9)
+
+    swings = detect_swings(BarSeries(bars))
+
+    lows = [s for s in swings if not s.is_high]
+
+    assert len(lows) == 1
+    assert lows[0].index == 15
