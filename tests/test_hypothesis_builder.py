@@ -1,4 +1,5 @@
 from auctionlab.research.hypothesis_builder import build_hypothesis
+from auctionlab.research.hypothesis_outcome import HypothesisOutcome
 
 
 def test_build_hypothesis():
@@ -12,4 +13,4 @@ def test_build_hypothesis():
     assert hypothesis.observation == "Bullish iFVG"
     assert hypothesis.inference == "Nearest UPO = PDH"
     assert hypothesis.prediction == "Reach PDH"
-    assert hypothesis.outcome is None
+    assert hypothesis.outcome == HypothesisOutcome.PENDING
