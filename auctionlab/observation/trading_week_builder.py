@@ -1,5 +1,14 @@
+from datetime import date
+
 from auctionlab.observation.trading_day import TradingDay
 from auctionlab.observation.trading_week import TradingWeek
+
+
+def _week_number(value) -> int:
+    if isinstance(value, str):
+        return date.fromisoformat(value).isocalendar().week
+
+    return value.isocalendar().week
 
 
 def build_trading_weeks(
@@ -14,7 +23,7 @@ def build_trading_weeks(
 
     for day in days:
 
-        week = day.date.isocalendar().week
+        week = _week_number(day.date)
 
         if current_week is None:
             current_week = week

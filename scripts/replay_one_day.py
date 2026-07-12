@@ -5,6 +5,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from auctionlab.io.csv_loader import load_csv
 from auctionlab.observation.trading_day_builder import build_trading_days
+from auctionlab.observation.trading_week_builder import build_trading_weeks
 from auctionlab.observation.swing_detector import detect_swings
 from auctionlab.inference.nearest_objective import Objective
 from auctionlab.inference.active_upos import ActiveUPOs
@@ -12,7 +13,7 @@ from auctionlab.inference.control import Control
 from auctionlab.replay.replay_engine import ReplayEngine
 from auctionlab.replay.snapshot_factory import build_snapshot
 from auctionlab.upo.previous_day_builder import previous_day_levels
-from auctionlab.upo.previous_week_builder import build_previous_week
+from auctionlab.upo.previous_week_builder import previous_week_levels
 
 
 def main():
@@ -20,6 +21,7 @@ def main():
     bars = load_csv("data/Futures/NQ/5m/2025-12_to_2026-07.csv")
 
     days = build_trading_days(bars)
+    weeks = build_trading_weeks(days)
 
     engine = ReplayEngine()
 
@@ -31,12 +33,11 @@ def main():
     )
 
     #
-    # TEMPORARY
-    # Replace these values later with an actual previous-week builder.
+    # First completed trading week in the dataset.
+    # Later we'll select the correct previous week dynamically.
     #
-    previous_week = build_previous_week(
-        high=25500.00,
-        low=24800.00,
+    previous_week = previous_week_levels(
+        weeks[0],
     )
 
     swings = detect_swings(current_day.bars)
