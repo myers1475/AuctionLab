@@ -1,14 +1,22 @@
-from datetime import datetime
-
 from auctionlab.inference.active_upos import ActiveUPOs
 from auctionlab.inference.control import Control
 from auctionlab.inference.nearest_objective import Objective
-from auctionlab.observation.market_snapshot import MarketSnapshot
+from auctionlab.inference.snapshot_builder import build_snapshot
 
 
-def test_market_snapshot():
+def test_snapshot_builder():
 
-    snapshot = MarketSnapshot(
+    objectives = [
+        Objective(
+            kind="PDH",
+            price=100,
+            source=None,
+        )
+    ]
+
+    snapshot = build_snapshot(
+        current_price=101,
+        objectives=objectives,
         active_upos=ActiveUPOs(
             swings=(),
             previous_days=(),
@@ -17,12 +25,8 @@ def test_market_snapshot():
             ifvgs=(),
         ),
         control=Control.BULLISH,
-        nearest_objective=Objective(
-            kind="PDH",
-            price=100,
-            source=None,
-        ),
     )
 
     assert snapshot.control == Control.BULLISH
+    assert snapshot.nearest_objective is not None
     assert snapshot.nearest_objective.kind == "PDH"
