@@ -1,20 +1,23 @@
 from auctionlab.inference.control import Control
 from auctionlab.inference.market_bias import MarketBias
-from auctionlab.inference.nearest_objective import Objective
+from auctionlab.inference.objective_direction import ObjectiveDirection
 
 
 def detect_bias(
     control: Control,
-    nearest: Objective | None,
+    direction: ObjectiveDirection,
 ) -> MarketBias:
 
-    if nearest is None:
-        return MarketBias.NEUTRAL
-
-    if control == Control.BULLISH and "Low" in nearest.kind:
+    if (
+        control == Control.BULLISH
+        and direction == ObjectiveDirection.ABOVE
+    ):
         return MarketBias.BULLISH
 
-    if control == Control.BEARISH and "High" in nearest.kind:
+    if (
+        control == Control.BEARISH
+        and direction == ObjectiveDirection.BELOW
+    ):
         return MarketBias.BEARISH
 
     return MarketBias.NEUTRAL
