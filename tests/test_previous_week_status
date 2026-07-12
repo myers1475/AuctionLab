@@ -1,0 +1,49 @@
+from datetime import datetime
+
+from auctionlab.observation.trading_day import TradingDay
+from auctionlab.observation.trading_week import TradingWeek
+from auctionlab.reality.bar_series import BarSeries
+from auctionlab.reality.candle import Candle
+from auctionlab.upo.previous_week_status import previous_week_status
+from auctionlab.upo.upo import UPOStatus
+
+
+def make_day(high: float, low: float) -> TradingDay:
+    return TradingDay(
+        date="2026-01-01",
+        bars=BarSeries(
+            [
+                Candle(
+                    timestamp=datetime.now(),
+                    open=1,
+                    high=high,
+                    low=low,
+                    close=1,
+                )
+            ]
+        ),
+    )
+
+
+def make_week(high: float, low: float) -> TradingWeek:
+    return TradingWeek(
+        start_date="2026-01-04",
+        end_date="2026-01-09",
+        days=(
+            make_day(high, low),
+        ),
+    )
+
+
+def test_previous_week_active():
+    previous = make_week(100, 80)
+    current = make_week(95, 85)
+
+    assert previous_week_status(previous, current) == UPOStatus.ACTIVE
+
+
+def test_previous_week_completed():
+    previous = make_week(100, 80)
+    current = make_week(101, 85)
+
+    assert previous_week_status(previous, current) == UPOStatus.COMPLETED

@@ -1,0 +1,18 @@
+from auctionlab.observation.trading_week import TradingWeek
+from auctionlab.upo.upo import UPOStatus
+
+
+def previous_week_status(
+    previous: TradingWeek,
+    current: TradingWeek,
+) -> UPOStatus:
+    previous_high = max(day.high for day in previous.days)
+    previous_low = min(day.low for day in previous.days)
+
+    current_high = max(day.high for day in current.days)
+    current_low = min(day.low for day in current.days)
+
+    if current_high > previous_high or current_low < previous_low:
+        return UPOStatus.COMPLETED
+
+    return UPOStatus.ACTIVE
