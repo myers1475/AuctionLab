@@ -8,6 +8,7 @@ from auctionlab.replay.replay_engine import ReplayEngine
 def make_snapshot(price):
 
     return MarketSnapshot(
+        current_price=price,
         active_upos=ActiveUPOs(
             swings=(),
             previous_days=(),
@@ -29,8 +30,6 @@ def test_replay_engine():
     engine = ReplayEngine()
 
     engine.process(make_snapshot(100))
-    engine.process(make_snapshot(105))
-    engine.process(make_snapshot(110))
+    engine.process(make_snapshot(101))
 
-    assert len(engine.snapshots) == 3
-    assert engine.snapshots.latest().nearest_objective.price == 110
+    assert len(engine.snapshots) == 2

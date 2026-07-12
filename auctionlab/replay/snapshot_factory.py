@@ -16,6 +16,7 @@ def build_snapshot(
 ) -> MarketSnapshot:
 
     return MarketSnapshot(
+        current_price=current_price,
         active_upos=active_upos,
         control=control,
         nearest_objective=nearest_objective(

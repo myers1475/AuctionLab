@@ -8,6 +8,7 @@ from auctionlab.replay.snapshot_sequence import SnapshotSequence
 def make_snapshot(price):
 
     return MarketSnapshot(
+        current_price=price,
         active_upos=ActiveUPOs(
             swings=(),
             previous_days=(),
@@ -29,7 +30,7 @@ def test_snapshot_sequence():
     sequence = SnapshotSequence()
 
     sequence.add(make_snapshot(100))
-    sequence.add(make_snapshot(105))
+    sequence.add(make_snapshot(101))
 
     assert len(sequence) == 2
-    assert sequence.latest().nearest_objective.price == 105
+    assert sequence.latest().nearest_objective.price == 101

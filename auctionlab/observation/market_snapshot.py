@@ -9,6 +9,9 @@ from auctionlab.inference.nearest_objective import Objective
 
 @dataclass(frozen=True)
 class MarketSnapshot:
+    current_price: float
+
     active_upos: ActiveUPOs
     control: Control
+
     nearest_objective: Objective | None

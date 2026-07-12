@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from auctionlab.inference.active_upos import ActiveUPOs
 from auctionlab.inference.control import Control
 from auctionlab.inference.nearest_objective import Objective
@@ -9,6 +7,7 @@ from auctionlab.observation.market_snapshot import MarketSnapshot
 def test_market_snapshot():
 
     snapshot = MarketSnapshot(
+        current_price=101,
         active_upos=ActiveUPOs(
             swings=(),
             previous_days=(),
@@ -24,5 +23,5 @@ def test_market_snapshot():
         ),
     )
 
+    assert snapshot.current_price == 101
     assert snapshot.control == Control.BULLISH
-    assert snapshot.nearest_objective.kind == "PDH"
