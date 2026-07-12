@@ -1,19 +1,26 @@
 from pathlib import Path
 import sys
+from datetime import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from auctionlab.io.csv_loader import load_csv
+
 from auctionlab.observation.trading_day_builder import build_trading_days
 from auctionlab.observation.trading_week_builder import build_trading_weeks
+from auctionlab.observation.session_builder import build_session
 from auctionlab.observation.swing_detector import detect_swings
-from auctionlab.inference.nearest_objective import Objective
+
 from auctionlab.inference.active_upos import ActiveUPOs
 from auctionlab.inference.control import Control
+from auctionlab.inference.nearest_objective import Objective
+
 from auctionlab.replay.replay_engine import ReplayEngine
 from auctionlab.replay.snapshot_factory import build_snapshot
+
 from auctionlab.upo.previous_day_builder import previous_day_levels
 from auctionlab.upo.previous_week_builder import previous_week_levels
+from auctionlab.upo.session_levels_detector import detect_session_levels
 
 
 def main():
@@ -32,12 +39,19 @@ def main():
         current_day,
     )
 
-    #
-    # First completed trading week in the dataset.
-    # Later we'll select the correct previous week dynamically.
-    #
     previous_week = previous_week_levels(
         weeks[0],
+    )
+
+    asia_session = build_session(
+        current_day,
+        "Asia",
+        time(20, 0),
+        time(23, 59),
+    )
+
+    asia_levels = detect_session_levels(
+        asia_session,
     )
 
     swings = detect_swings(current_day.bars)
@@ -81,6 +95,16 @@ def main():
                     price=previous_week.low,
                     source=previous_week,
                 ),
+                Objective(
+                    kind="Asia High",
+                    price=asia_levels.high,
+                    source=asia_levels,
+                ),
+                Objective(
+                    kind="Asia Low",
+                    price=asia_levels.low,
+                    source=asia_levels,
+                ),
             ]
         )
 
@@ -111,6 +135,8 @@ def main():
     print(f"Previous Day Low         : {previous_day.low}")
     print(f"Previous Week High       : {previous_week.high}")
     print(f"Previous Week Low        : {previous_week.low}")
+    print(f"Asia High               : {asia_levels.high}")
+    print(f"Asia Low                : {asia_levels.low}")
     print(f"Snapshots                : {len(engine.snapshots)}")
     print(f"Snapshot Swings          : {len(latest.active_upos.swings)}")
     print(f"Snapshot Previous Days   : {len(latest.active_upos.previous_days)}")
