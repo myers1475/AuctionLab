@@ -16,3 +16,5 @@ class FairValueGap:
     bullish: bool
 
     status: UPOStatus
+
+    completed: datetime | None = None
