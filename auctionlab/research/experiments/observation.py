@@ -3,6 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
+from auctionlab.inference.control import Control
+from auctionlab.inference.nearest_objective import Objective
+
 
 @dataclass(frozen=True)
 class Observation:
@@ -10,7 +13,8 @@ class Observation:
 
     current_price: float
 
-    objective_kind: str
-    objective_price: float
+    visible_objectives: tuple[Objective, ...]
 
-    source: object
+    nearest_objective: Objective | None
+
+    control: Control

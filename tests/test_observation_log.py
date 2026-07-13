@@ -1,3 +1,4 @@
+from auctionlab.inference.control import Control
 from auctionlab.research.experiments.observation import Observation
 from auctionlab.research.experiments.observation_log import ObservationLog
 
@@ -10,11 +11,11 @@ def test_observation_log():
         Observation(
             timestamp=None,
             current_price=100,
-            objective_kind="PDH",
-            objective_price=110,
-            source=None,
+            visible_objectives=(),
+            nearest_objective=None,
+            control=Control.NEUTRAL,
         )
     )
 
     assert len(log) == 1
-    assert log.observations[0].objective_kind == "PDH"
+    assert log.observations[0].current_price == 100
