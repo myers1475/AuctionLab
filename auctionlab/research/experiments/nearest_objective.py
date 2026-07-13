@@ -1,30 +1,19 @@
-from auctionlab.inference.nearest_objective import (
-    Objective,
-    nearest_objective,
-)
+from auctionlab.observation.market_snapshot import MarketSnapshot
 
 from auctionlab.research.experiments.observation import Observation
 
 
 def run(
-    *,
-    timestamp,
-    current_price: float,
-    objectives: list[Objective],
+    snapshot: MarketSnapshot,
 ):
 
-    objective = nearest_objective(
-        current_price=current_price,
-        objectives=objectives,
-    )
-
-    if objective is None:
+    if snapshot.nearest_objective is None:
         return None
 
     return Observation(
-        timestamp=timestamp,
-        current_price=current_price,
-        objective_kind=objective.kind,
-        objective_price=objective.price,
-        source=objective.source,
+        timestamp=snapshot.timestamp,
+        current_price=snapshot.current_price,
+        objective_kind=snapshot.nearest_objective.kind,
+        objective_price=snapshot.nearest_objective.price,
+        source=snapshot.nearest_objective.source,
     )
