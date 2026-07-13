@@ -1,12 +1,5 @@
 from pathlib import Path
 import sys
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-
-from auctionlab.research.experiment_runner import ExperimentRunner
-import auctionlab.research.experiments.nearest_objective as nearest_objective
-from pathlib import Path
-import sys
 from datetime import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -24,6 +17,10 @@ from auctionlab.inference.nearest_objective import Objective
 
 from auctionlab.replay.replay_engine import ReplayEngine
 from auctionlab.replay.snapshot_factory import build_snapshot
+
+from auctionlab.research.experiment_runner import ExperimentRunner
+import auctionlab.research.experiments.nearest_objective as nearest_objective
+from auctionlab.research.experiments.csv_exporter import export_csv
 
 from auctionlab.upo.previous_day_builder import previous_day_levels
 from auctionlab.upo.previous_week_builder import previous_week_levels
@@ -147,17 +144,24 @@ def main():
         )
 
         engine.process(snapshot)
-        latest = engine.snapshots.latest()
+
     runner = ExperimentRunner()
 
     log = runner.run(
         snapshots=engine.snapshots,
         experiment=nearest_objective,
     )
+
+    export_csv(
+        log,
+        "output/experiment_001.csv",
+    )
+
     print()
     print("Experiment 001")
     print("----------------------------")
     print(f"Observations : {len(log)}")
+    print("CSV          : output/experiment_001.csv")
 
     if len(log):
 
