@@ -18,14 +18,12 @@ def resolve(
     tracker = ExcursionTracker(observation)
 
     target = nearest.price
-    is_high = target >= observation.current_price
+    entry = observation.current_price
 
-    distance_to_target = abs(target - observation.current_price)
+    is_high = target >= entry
 
-    if distance_to_target == 0:
-        percent_to_target = 100.0
-    else:
-        percent_to_target = 0.0
+    distance_to_target = abs(target - entry)
+    best_progress = 0.0
 
     for bars, snapshot in enumerate(snapshots, start=1):
 
@@ -35,9 +33,23 @@ def resolve(
         tracker.update(snapshot.current_price)
 
         if is_high:
+            progress = snapshot.current_price - entry
             reached = snapshot.current_price >= target
         else:
+            progress = entry - snapshot.current_price
             reached = snapshot.current_price <= target
+
+        if distance_to_target > 0:
+            percent_to_target = min(
+                100.0,
+                max(
+                    best_progress,
+                    progress / distance_to_target * 100.0,
+                ),
+            )
+            best_progress = percent_to_target
+        else:
+            percent_to_target = 100.0
 
         if reached:
 
@@ -51,7 +63,7 @@ def resolve(
                 maximum_favorable_excursion=tracker.maximum_favorable_excursion,
                 maximum_adverse_excursion=tracker.maximum_adverse_excursion,
                 distance_to_target=distance_to_target,
-                percent_to_target=percent_to_target,
+                percent_to_target=100.0,
             )
 
     return Outcome(
@@ -64,5 +76,5 @@ def resolve(
         maximum_favorable_excursion=tracker.maximum_favorable_excursion,
         maximum_adverse_excursion=tracker.maximum_adverse_excursion,
         distance_to_target=distance_to_target,
-        percent_to_target=percent_to_target,
+        percent_to_target=best_progress,
     )
