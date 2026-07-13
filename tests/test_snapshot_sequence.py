@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from auctionlab.inference.active_upos import ActiveUPOs
 from auctionlab.inference.control import Control
 from auctionlab.inference.nearest_objective import Objective
@@ -8,6 +10,7 @@ from auctionlab.replay.snapshot_sequence import SnapshotSequence
 def make_snapshot(price):
 
     return MarketSnapshot(
+        timestamp=datetime.now(),
         current_price=price,
         active_upos=ActiveUPOs(
             swings=(),

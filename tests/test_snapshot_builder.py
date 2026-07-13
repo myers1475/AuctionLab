@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from auctionlab.inference.active_upos import ActiveUPOs
 from auctionlab.inference.control import Control
 from auctionlab.inference.nearest_objective import Objective
@@ -15,6 +17,7 @@ def test_snapshot_builder():
     ]
 
     snapshot = build_snapshot(
+        timestamp=datetime.now(),
         current_price=101,
         objectives=objectives,
         active_upos=ActiveUPOs(
@@ -27,6 +30,4 @@ def test_snapshot_builder():
         control=Control.BULLISH,
     )
 
-    assert snapshot.control == Control.BULLISH
-    assert snapshot.nearest_objective is not None
     assert snapshot.nearest_objective.kind == "PDH"

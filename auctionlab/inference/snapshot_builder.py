@@ -8,6 +8,8 @@ from auctionlab.observation.market_snapshot import MarketSnapshot
 
 
 def build_snapshot(
+    *,
+    timestamp,
     current_price: float,
     objectives: list[Objective],
     active_upos: ActiveUPOs,
@@ -15,6 +17,7 @@ def build_snapshot(
 ) -> MarketSnapshot:
 
     return MarketSnapshot(
+        timestamp=timestamp,
         current_price=current_price,
         active_upos=active_upos,
         control=control,
