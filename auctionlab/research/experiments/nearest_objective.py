@@ -13,7 +13,7 @@ def run(
     return Observation(
         timestamp=snapshot.timestamp,
         current_price=snapshot.current_price,
-        objective_kind=snapshot.nearest_objective.kind,
-        objective_price=snapshot.nearest_objective.price,
-        source=snapshot.nearest_objective.source,
+        visible_objectives=(snapshot.nearest_objective,),
+        nearest_objective=snapshot.nearest_objective,
+        control=snapshot.control,
     )
