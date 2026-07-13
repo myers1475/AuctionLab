@@ -1,3 +1,6 @@
+from auctionlab.research.experiments.excursion_tracker import (
+    ExcursionTracker,
+)
 from auctionlab.research.experiments.observation import Observation
 from auctionlab.research.experiments.outcome import Outcome
 
@@ -12,6 +15,8 @@ def resolve(
     if nearest is None:
         return None
 
+    tracker = ExcursionTracker(observation)
+
     target = nearest.price
     is_high = target >= observation.current_price
 
@@ -19,6 +24,8 @@ def resolve(
 
         if snapshot.timestamp <= observation.timestamp:
             continue
+
+        tracker.update(snapshot.current_price)
 
         if is_high:
             reached = snapshot.current_price >= target
@@ -34,8 +41,8 @@ def resolve(
                 target_price=target,
                 reached=True,
                 bars_to_outcome=bars,
-                maximum_favorable_excursion=None,
-                maximum_adverse_excursion=None,
+                maximum_favorable_excursion=tracker.maximum_favorable_excursion,
+                maximum_adverse_excursion=tracker.maximum_adverse_excursion,
             )
 
     return Outcome(
@@ -45,6 +52,6 @@ def resolve(
         target_price=target,
         reached=False,
         bars_to_outcome=None,
-        maximum_favorable_excursion=None,
-        maximum_adverse_excursion=None,
+        maximum_favorable_excursion=tracker.maximum_favorable_excursion,
+        maximum_adverse_excursion=tracker.maximum_adverse_excursion,
     )
