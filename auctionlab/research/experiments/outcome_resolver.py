@@ -20,6 +20,13 @@ def resolve(
     target = nearest.price
     is_high = target >= observation.current_price
 
+    distance_to_target = abs(target - observation.current_price)
+
+    if distance_to_target == 0:
+        percent_to_target = 100.0
+    else:
+        percent_to_target = 0.0
+
     for bars, snapshot in enumerate(snapshots, start=1):
 
         if snapshot.timestamp <= observation.timestamp:
@@ -43,6 +50,8 @@ def resolve(
                 bars_to_outcome=bars,
                 maximum_favorable_excursion=tracker.maximum_favorable_excursion,
                 maximum_adverse_excursion=tracker.maximum_adverse_excursion,
+                distance_to_target=distance_to_target,
+                percent_to_target=percent_to_target,
             )
 
     return Outcome(
@@ -54,4 +63,6 @@ def resolve(
         bars_to_outcome=None,
         maximum_favorable_excursion=tracker.maximum_favorable_excursion,
         maximum_adverse_excursion=tracker.maximum_adverse_excursion,
+        distance_to_target=distance_to_target,
+        percent_to_target=percent_to_target,
     )

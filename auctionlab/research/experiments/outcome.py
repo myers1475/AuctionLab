@@ -17,3 +17,6 @@ class Outcome:
 
     maximum_favorable_excursion: float | None
     maximum_adverse_excursion: float | None
+
+    distance_to_target: float | None
+    percent_to_target: float | None

@@ -19,4 +19,6 @@ def detect_outcome(
         bars_to_outcome=None,
         maximum_favorable_excursion=None,
         maximum_adverse_excursion=None,
+        distance_to_target=None,
+        percent_to_target=None,
     )
