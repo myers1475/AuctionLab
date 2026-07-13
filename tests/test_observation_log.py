@@ -8,11 +8,13 @@ def test_observation_log():
 
     log.add(
         Observation(
+            timestamp=None,
             current_price=100,
-            target_name="PDH",
-            target_price=110,
+            objective_kind="PDH",
+            objective_price=110,
+            source=None,
         )
     )
 
     assert len(log) == 1
-    assert log.observations[0].target_name == "PDH"
+    assert log.observations[0].objective_kind == "PDH"
