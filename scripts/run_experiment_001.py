@@ -20,7 +20,11 @@ from auctionlab.replay.snapshot_factory import build_snapshot
 
 from auctionlab.research.experiment_runner import ExperimentRunner
 import auctionlab.research.experiments.nearest_objective as nearest_objective
+
 from auctionlab.research.experiments.csv_exporter import export_csv
+from auctionlab.research.experiments.outcome_csv_exporter import (
+    export_outcomes,
+)
 from auctionlab.research.experiments.outcome_log import OutcomeLog
 from auctionlab.research.experiments.outcome_resolver import resolve
 from auctionlab.research.experiments.outcome_statistics import calculate
@@ -173,13 +177,19 @@ def main():
         if outcome is not None:
             outcomes.add(outcome)
 
+    export_outcomes(
+        outcomes,
+        "output/experiment_001_outcomes.csv",
+    )
+
     statistics = calculate(outcomes)
 
     print()
     print("Experiment 001")
     print("----------------------------")
     print(f"Observations : {len(log)}")
-    print(f"CSV          : output/experiment_001.csv")
+    print("Observation CSV : output/experiment_001.csv")
+    print("Outcome CSV     : output/experiment_001_outcomes.csv")
 
     print_report(statistics)
 
