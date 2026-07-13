@@ -17,4 +17,6 @@ def detect_outcome(
         target_price=nearest.price,
         reached=False,
         bars_to_outcome=None,
+        maximum_favorable_excursion=None,
+        maximum_adverse_excursion=None,
     )

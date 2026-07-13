@@ -14,6 +14,8 @@ def test_outcome_log():
             target_price=100,
             reached=False,
             bars_to_outcome=None,
+            maximum_favorable_excursion=None,
+            maximum_adverse_excursion=None,
         )
     )
 

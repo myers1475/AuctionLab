@@ -14,3 +14,6 @@ class Outcome:
 
     reached: bool
     bars_to_outcome: int | None
+
+    maximum_favorable_excursion: float | None
+    maximum_adverse_excursion: float | None

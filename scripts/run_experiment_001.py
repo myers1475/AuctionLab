@@ -21,6 +21,10 @@ from auctionlab.replay.snapshot_factory import build_snapshot
 from auctionlab.research.experiment_runner import ExperimentRunner
 import auctionlab.research.experiments.nearest_objective as nearest_objective
 from auctionlab.research.experiments.csv_exporter import export_csv
+from auctionlab.research.experiments.outcome_log import OutcomeLog
+from auctionlab.research.experiments.outcome_resolver import resolve
+from auctionlab.research.experiments.outcome_statistics import calculate
+from auctionlab.research.experiments.outcome_report import print_report
 
 from auctionlab.upo.previous_day_builder import previous_day_levels
 from auctionlab.upo.previous_week_builder import previous_week_levels
@@ -157,11 +161,27 @@ def main():
         "output/experiment_001.csv",
     )
 
+    outcomes = OutcomeLog()
+
+    for observation in log.observations:
+
+        outcome = resolve(
+            observation,
+            engine.snapshots,
+        )
+
+        if outcome is not None:
+            outcomes.add(outcome)
+
+    statistics = calculate(outcomes)
+
     print()
     print("Experiment 001")
     print("----------------------------")
     print(f"Observations : {len(log)}")
-    print("CSV          : output/experiment_001.csv")
+    print(f"CSV          : output/experiment_001.csv")
+
+    print_report(statistics)
 
     if len(log):
 
