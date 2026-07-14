@@ -22,3 +22,15 @@ def print_report(
     print(f"Median Bars       : {statistics.median_bars_to_target}")
     print(f"Average Bars      : {statistics.average_bars_to_target:.2f}")
     print(f"Maximum Bars      : {statistics.maximum_bars_to_target}")
+
+    print()
+    print("Efficiency")
+    print("----------------------------")
+
+    if statistics.average_efficiency is None:
+        print("Average Efficiency : N/A")
+    else:
+        print(
+            f"Average Efficiency : "
+            f"{statistics.average_efficiency:.2f}x"
+        )

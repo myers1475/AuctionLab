@@ -1,8 +1,5 @@
 target_kind,observations,targets_reached,hit_rate
-Asia High,29,29,1.0
-Asia Low,1,1,1.0
-New York High,2,2,1.0
-New York Low,2,2,1.0
-Previous Day High,3,3,1.0
-Swing High,108,104,0.9629629629629629
-Swing Low,131,130,0.9923664122137404
+Previous Day High,18,18,1.0
+Previous Day Low,1,0,0.0
+Swing High,123,119,0.967479674796748
+Swing Low,134,133,0.9925373134328358

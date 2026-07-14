@@ -1,22 +1,22 @@
 timestamp,price,nearest_objective,nearest_price,control
-2025-12-15 19:00:00,25370.25,New York High,25409.0,Neutral
-2025-12-15 19:05:00,25369.0,New York High,25409.0,Neutral
-2025-12-15 19:10:00,25360.25,Asia High,25317.5,Neutral
-2025-12-15 19:15:00,25360.5,Asia High,25317.5,Neutral
-2025-12-15 19:20:00,25354.0,Asia High,25317.5,Neutral
-2025-12-15 19:25:00,25341.25,Asia High,25317.5,Neutral
-2025-12-15 19:30:00,25317.75,Asia High,25317.5,Neutral
-2025-12-15 19:35:00,25322.5,Asia High,25317.5,Neutral
-2025-12-15 19:40:00,25322.5,Asia High,25317.5,Neutral
-2025-12-15 19:45:00,25300.5,Asia High,25317.5,Neutral
-2025-12-15 19:50:00,25298.5,Asia High,25317.5,Neutral
-2025-12-15 19:55:00,25306.25,Asia High,25317.5,Neutral
-2025-12-15 20:00:00,25304.5,Asia High,25317.5,Neutral
-2025-12-15 20:05:00,25274.0,Asia High,25317.5,Neutral
-2025-12-15 20:10:00,25268.0,Asia High,25317.5,Neutral
+2025-12-15 19:00:00,25370.25,Previous Day High,25410.0,Neutral
+2025-12-15 19:05:00,25369.0,Previous Day High,25410.0,Neutral
+2025-12-15 19:10:00,25360.25,Previous Day High,25410.0,Neutral
+2025-12-15 19:15:00,25360.5,Previous Day High,25410.0,Neutral
+2025-12-15 19:20:00,25354.0,Previous Day High,25410.0,Neutral
+2025-12-15 19:25:00,25341.25,Previous Day High,25410.0,Neutral
+2025-12-15 19:30:00,25317.75,Previous Day High,25410.0,Neutral
+2025-12-15 19:35:00,25322.5,Previous Day High,25410.0,Neutral
+2025-12-15 19:40:00,25322.5,Previous Day High,25410.0,Neutral
+2025-12-15 19:45:00,25300.5,Previous Day High,25410.0,Neutral
+2025-12-15 19:50:00,25298.5,Previous Day High,25410.0,Neutral
+2025-12-15 19:55:00,25306.25,Previous Day High,25410.0,Neutral
+2025-12-15 20:00:00,25304.5,Previous Day High,25410.0,Neutral
+2025-12-15 20:05:00,25274.0,Previous Day High,25410.0,Neutral
+2025-12-15 20:10:00,25268.0,Previous Day High,25410.0,Neutral
 2025-12-15 20:15:00,25259.5,Swing Low,25239.75,Neutral
 2025-12-15 20:20:00,25274.5,Swing Low,25239.75,Neutral
-2025-12-15 20:25:00,25283.25,Asia High,25317.5,Neutral
+2025-12-15 20:25:00,25283.25,Swing Low,25239.75,Neutral
 2025-12-15 20:30:00,25279.0,Swing High,25294.25,Neutral
 2025-12-15 20:35:00,25261.75,Swing Low,25239.75,Neutral
 2025-12-15 20:40:00,25269.75,Swing High,25294.25,Neutral
@@ -30,7 +30,7 @@ timestamp,price,nearest_objective,nearest_price,control
 2025-12-15 21:20:00,25247.25,Swing Low,25239.75,Neutral
 2025-12-15 21:25:00,25243.25,Swing Low,25239.75,Neutral
 2025-12-15 21:30:00,25213.0,Swing Low,25230.5,Neutral
-2025-12-15 21:35:00,25129.5,Asia Low,25103.5,Neutral
+2025-12-15 21:35:00,25129.5,Previous Day Low,25033.25,Neutral
 2025-12-15 21:40:00,25122.5,Swing Low,25112.5,Neutral
 2025-12-15 21:45:00,25127.0,Swing Low,25112.5,Neutral
 2025-12-15 21:50:00,25158.5,Swing High,25166.75,Neutral
@@ -40,7 +40,7 @@ timestamp,price,nearest_objective,nearest_price,control
 2025-12-15 22:10:00,25165.5,Swing High,25166.75,Neutral
 2025-12-15 22:15:00,25162.0,Swing High,25166.75,Neutral
 2025-12-15 22:20:00,25156.75,Swing High,25166.75,Neutral
-2025-12-15 22:25:00,25176.5,New York Low,25171.75,Neutral
+2025-12-15 22:25:00,25176.5,Swing High,25170.5,Neutral
 2025-12-15 22:30:00,25162.25,Swing High,25166.75,Neutral
 2025-12-15 22:35:00,25152.75,Swing High,25166.75,Neutral
 2025-12-15 22:40:00,25164.5,Swing High,25166.75,Neutral
@@ -114,7 +114,7 @@ timestamp,price,nearest_objective,nearest_price,control
 2025-12-16 04:20:00,25170.75,Swing High,25170.5,Neutral
 2025-12-16 04:25:00,25184.0,Swing High,25184.5,Neutral
 2025-12-16 04:30:00,25174.25,Swing High,25173.25,Neutral
-2025-12-16 04:35:00,25171.25,New York Low,25171.75,Neutral
+2025-12-16 04:35:00,25171.25,Swing High,25170.5,Neutral
 2025-12-16 04:40:00,25192.5,Swing High,25188.25,Neutral
 2025-12-16 04:45:00,25211.25,Swing Low,25230.5,Neutral
 2025-12-16 04:50:00,25204.75,Swing High,25188.25,Neutral
@@ -157,15 +157,15 @@ timestamp,price,nearest_objective,nearest_price,control
 2025-12-16 07:55:00,25293.0,Swing High,25294.25,Neutral
 2025-12-16 08:00:00,25290.75,Swing High,25294.25,Neutral
 2025-12-16 08:05:00,25290.0,Swing High,25294.25,Neutral
-2025-12-16 08:10:00,25310.25,Asia High,25317.5,Neutral
-2025-12-16 08:15:00,25312.25,Asia High,25317.5,Neutral
-2025-12-16 08:20:00,25306.0,Asia High,25317.5,Neutral
-2025-12-16 08:25:00,25309.5,Asia High,25317.5,Neutral
+2025-12-16 08:10:00,25310.25,Swing High,25294.25,Neutral
+2025-12-16 08:15:00,25312.25,Swing High,25320.25,Neutral
+2025-12-16 08:20:00,25306.0,Swing High,25294.25,Neutral
+2025-12-16 08:25:00,25309.5,Swing High,25320.25,Neutral
 2025-12-16 08:30:00,25319.0,Swing High,25320.25,Neutral
 2025-12-16 08:35:00,25304.25,Swing Low,25300.5,Neutral
-2025-12-16 08:40:00,25310.75,Asia High,25317.5,Neutral
+2025-12-16 08:40:00,25310.75,Swing High,25320.25,Neutral
 2025-12-16 08:45:00,25308.0,Swing Low,25300.5,Neutral
-2025-12-16 08:50:00,25312.0,Asia High,25317.5,Neutral
+2025-12-16 08:50:00,25312.0,Swing High,25320.25,Neutral
 2025-12-16 08:55:00,25298.0,Swing Low,25300.5,Neutral
 2025-12-16 09:00:00,25283.0,Swing High,25274.5,Neutral
 2025-12-16 09:05:00,25277.5,Swing High,25274.5,Neutral
@@ -201,9 +201,9 @@ timestamp,price,nearest_objective,nearest_price,control
 2025-12-16 11:35:00,25239.25,Swing Low,25239.75,Neutral
 2025-12-16 11:40:00,25254.75,Swing Low,25259.5,Neutral
 2025-12-16 11:45:00,25276.75,Swing High,25274.5,Neutral
-2025-12-16 11:50:00,25309.75,Asia High,25317.5,Neutral
+2025-12-16 11:50:00,25309.75,Swing Low,25300.5,Neutral
 2025-12-16 11:55:00,25321.75,Swing High,25320.25,Neutral
-2025-12-16 12:00:00,25310.25,Asia High,25317.5,Neutral
+2025-12-16 12:00:00,25310.25,Swing Low,25300.5,Neutral
 2025-12-16 12:05:00,25291.0,Swing High,25290.5,Neutral
 2025-12-16 12:10:00,25259.75,Swing Low,25259.5,Neutral
 2025-12-16 12:15:00,25245.5,Swing Low,25239.75,Neutral
@@ -235,10 +235,10 @@ timestamp,price,nearest_objective,nearest_price,control
 2025-12-16 14:25:00,25203.5,Swing Low,25205.25,Neutral
 2025-12-16 14:30:00,25253.5,Swing Low,25259.5,Neutral
 2025-12-16 14:35:00,25284.25,Swing Low,25280.5,Neutral
-2025-12-16 14:40:00,25318.0,Asia High,25317.5,Neutral
+2025-12-16 14:40:00,25318.0,Swing High,25319.75,Neutral
 2025-12-16 14:45:00,25333.0,Swing High,25324.25,Neutral
-2025-12-16 14:50:00,25316.75,Asia High,25317.5,Neutral
-2025-12-16 14:55:00,25316.25,Asia High,25317.5,Neutral
+2025-12-16 14:50:00,25316.75,Swing High,25319.75,Neutral
+2025-12-16 14:55:00,25316.25,Swing High,25319.75,Neutral
 2025-12-16 15:00:00,25258.5,Swing Low,25259.5,Neutral
 2025-12-16 15:05:00,25266.0,Swing Low,25263.25,Neutral
 2025-12-16 15:10:00,25239.0,Swing Low,25239.75,Neutral
@@ -247,10 +247,10 @@ timestamp,price,nearest_objective,nearest_price,control
 2025-12-16 15:25:00,25280.75,Swing Low,25280.5,Neutral
 2025-12-16 15:30:00,25295.0,Swing High,25294.25,Neutral
 2025-12-16 15:35:00,25298.75,Swing Low,25300.5,Neutral
-2025-12-16 15:40:00,25316.0,Asia High,25317.5,Neutral
-2025-12-16 15:45:00,25312.25,Asia High,25317.5,Neutral
+2025-12-16 15:40:00,25316.0,Swing High,25319.75,Neutral
+2025-12-16 15:45:00,25312.25,Swing High,25319.75,Neutral
 2025-12-16 15:50:00,25330.5,Swing High,25324.25,Neutral
-2025-12-16 15:55:00,25318.5,Asia High,25317.5,Neutral
+2025-12-16 15:55:00,25318.5,Swing High,25319.75,Neutral
 2025-12-16 16:00:00,25352.5,Swing High,25352.75,Neutral
 2025-12-16 16:05:00,25360.25,Swing High,25355.0,Neutral
 2025-12-16 16:10:00,25333.75,Swing High,25324.25,Neutral
@@ -267,7 +267,7 @@ timestamp,price,nearest_objective,nearest_price,control
 2025-12-16 17:05:00,25350.5,Swing High,25350.5,Neutral
 2025-12-16 17:10:00,25344.0,Swing High,25344.0,Neutral
 2025-12-16 17:15:00,25325.75,Swing High,25324.25,Neutral
-2025-12-16 17:20:00,25317.75,Asia High,25317.5,Neutral
+2025-12-16 17:20:00,25317.75,Swing High,25319.75,Neutral
 2025-12-16 17:25:00,25323.5,Swing High,25324.25,Neutral
 2025-12-16 17:30:00,25330.25,Swing Low,25330.0,Neutral
 2025-12-16 17:35:00,25331.25,Swing Low,25330.0,Neutral
