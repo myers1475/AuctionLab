@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from auctionlab.reality.candle import Candle
+
 from auctionlab.inference.active_upos import ActiveUPOs
 from auctionlab.inference.control import Control
 from auctionlab.observation.market_snapshot import MarketSnapshot
@@ -16,9 +18,19 @@ def test_runner_returns_empty_log():
 
     runner = ExperimentRunner()
 
+    candle = Candle(
+        timestamp=datetime.now(),
+        open=100,
+        high=101,
+        low=99,
+        close=100,
+        volume=None,
+    )
+
     snapshots = [
         MarketSnapshot(
-            timestamp=datetime.now(),
+            timestamp=candle.timestamp,
+            candle=candle,
             current_price=100,
             active_upos=ActiveUPOs(
                 swings=(),

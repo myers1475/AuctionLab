@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from auctionlab.reality.candle import Candle
+
 from auctionlab.inference.active_upos import ActiveUPOs
 from auctionlab.inference.control import Control
 from auctionlab.inference.nearest_objective import Objective
@@ -16,8 +18,18 @@ def test_snapshot_builder():
         )
     ]
 
-    snapshot = build_snapshot(
+    candle = Candle(
         timestamp=datetime.now(),
+        open=101,
+        high=102,
+        low=100,
+        close=101,
+        volume=None,
+    )
+
+    snapshot = build_snapshot(
+        timestamp=candle.timestamp,
+        candle=candle,
         current_price=101,
         objectives=objectives,
         active_upos=ActiveUPOs(

@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from auctionlab.reality.candle import Candle
+
 from auctionlab.inference.active_upos import ActiveUPOs
 from auctionlab.inference.control import Control
 from auctionlab.inference.nearest_objective import Objective
@@ -9,8 +11,18 @@ from auctionlab.replay.snapshot_sequence import SnapshotSequence
 
 def make_snapshot(price):
 
-    return MarketSnapshot(
+    candle = Candle(
         timestamp=datetime.now(),
+        open=price,
+        high=price,
+        low=price,
+        close=price,
+        volume=None,
+    )
+
+    return MarketSnapshot(
+        timestamp=candle.timestamp,
+        candle=candle,
         current_price=price,
         active_upos=ActiveUPOs(
             swings=(),

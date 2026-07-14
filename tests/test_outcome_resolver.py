@@ -1,3 +1,7 @@
+from datetime import datetime
+
+from auctionlab.reality.candle import Candle
+
 from auctionlab.inference.control import Control
 from auctionlab.inference.nearest_objective import Objective
 from auctionlab.observation.market_snapshot import MarketSnapshot
@@ -19,9 +23,19 @@ def test_resolve_no_future_hit():
         control=Control.NEUTRAL,
     )
 
+    candle = Candle(
+        timestamp=datetime.now(),
+        open=105,
+        high=105,
+        low=105,
+        close=105,
+        volume=None,
+    )
+
     snapshots = [
         MarketSnapshot(
             timestamp=2,
+            candle=candle,
             current_price=105,
             active_upos=None,
             control=Control.NEUTRAL,
