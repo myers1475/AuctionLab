@@ -37,6 +37,7 @@ def export_outcomes(
                 "percent_to_target",
                 "mfe",
                 "mae",
+                "efficiency",
             ]
         )
 
@@ -54,6 +55,7 @@ def export_outcomes(
                     outcome.percent_to_target,
                     outcome.maximum_favorable_excursion,
                     outcome.maximum_adverse_excursion,
+                    outcome.efficiency,
                 ]
             )
 
