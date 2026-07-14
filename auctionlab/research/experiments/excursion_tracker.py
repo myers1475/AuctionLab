@@ -1,3 +1,4 @@
+from auctionlab.reality.candle import Candle
 from auctionlab.research.experiments.observation import Observation
 
 
@@ -8,19 +9,30 @@ class ExcursionTracker:
         observation: Observation,
     ):
         self._entry = observation.current_price
+        self._is_long = (
+            observation.nearest_objective.price >= observation.current_price
+        )
 
         self.maximum_favorable_excursion = 0.0
         self.maximum_adverse_excursion = 0.0
 
     def update(
         self,
-        price: float,
+        candle: Candle,
     ) -> None:
 
-        move = price - self._entry
+        if self._is_long:
 
-        if move > self.maximum_favorable_excursion:
-            self.maximum_favorable_excursion = move
+            favorable = candle.high - self._entry
+            adverse = candle.low - self._entry
 
-        if move < self.maximum_adverse_excursion:
-            self.maximum_adverse_excursion = move
+        else:
+
+            favorable = self._entry - candle.low
+            adverse = self._entry - candle.high
+
+        if favorable > self.maximum_favorable_excursion:
+            self.maximum_favorable_excursion = favorable
+
+        if adverse < self.maximum_adverse_excursion:
+            self.maximum_adverse_excursion = adverse

@@ -30,7 +30,7 @@ def resolve(
         if snapshot.timestamp <= observation.timestamp:
             continue
 
-        tracker.update(snapshot.current_price)
+        tracker.update(snapshot.candle)
 
         if is_high:
             progress = snapshot.candle.high - entry
