@@ -34,3 +34,22 @@ class Outcome:
             self.maximum_favorable_excursion
             / self.distance_to_target
         )
+
+    @property
+    def reward_risk(self) -> float | None:
+
+        if (
+            self.maximum_favorable_excursion is None
+            or self.maximum_adverse_excursion is None
+        ):
+            return None
+
+        risk = abs(self.maximum_adverse_excursion)
+
+        if risk == 0:
+            return None
+
+        return (
+            self.maximum_favorable_excursion
+            / risk
+        )
