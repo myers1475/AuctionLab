@@ -29,6 +29,7 @@ from auctionlab.research.experiments.outcome_log import OutcomeLog
 from auctionlab.research.experiments.outcome_resolver import resolve
 from auctionlab.research.experiments.outcome_statistics import (
     calculate,
+    calculate_by_distance,
     calculate_by_target_kind,
 )
 from auctionlab.research.experiments.outcome_report import print_report
@@ -138,6 +139,10 @@ def main():
 
     statistics = calculate(outcomes)
     by_target = calculate_by_target_kind(outcomes)
+    by_distance = calculate_by_distance(
+        outcomes,
+        bucket_size=25,
+    )
 
     print()
     print("Experiment 001")
@@ -158,6 +163,32 @@ def main():
             f"{row.target_kind:<20}"
             f"{row.reached:>5}/{row.total:<5}"
             f"{row.hit_rate:>8.2%}"
+        )
+
+    print()
+    print("Hit Rate by Initial Distance")
+    print("----------------------------")
+
+    for row in by_distance:
+
+        efficiency = (
+            f"{row.average_efficiency:.2f}x"
+            if row.average_efficiency is not None
+            else "N/A"
+        )
+
+        bars = (
+            f"{row.average_bars_to_target:.1f}"
+            if row.average_bars_to_target is not None
+            else "N/A"
+        )
+
+        print(
+            f"{row.minimum_distance:>5.0f}-{row.maximum_distance:<5.0f}"
+            f"{row.reached:>5}/{row.total:<5}"
+            f"{row.hit_rate:>8.2%}"
+            f"   AvgEff={efficiency:<8}"
+            f" AvgBars={bars}"
         )
 
     if len(log):
