@@ -1,14 +1,21 @@
-from auctionlab.inference.active_upo_selector import active_upos
-from auctionlab.inference.upo_repository import UPORepository
+from auctionlab.research.active_hypothesis import ActiveHypothesis
+from auctionlab.research.hypothesis_builder import build_hypothesis
 
 
-def test_active_upos():
+def test_active_hypothesis():
 
-    repo = UPORepository(
-        swings=(1, 2),
-        previous_days=(3,),
-        previous_weeks=(4,),
-        sessions=(5, 6),
+    hypothesis = build_hypothesis(
+        observation="Bullish iFVG",
+        inference="Nearest UPO = PDH",
+        prediction="Reach PDH",
     )
 
-    assert active_upos(repo) == [1, 2, 3, 4, 5, 6]
+    active = ActiveHypothesis(
+        hypothesis=hypothesis,
+        entry_price=100.0,
+    )
+
+    assert active.entry_price == 100.0
+    assert active.bars_elapsed == 0
+    assert active.mae == 0.0
+    assert active.mfe == 0.0
