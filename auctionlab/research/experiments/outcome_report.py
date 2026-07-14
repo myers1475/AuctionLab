@@ -34,3 +34,15 @@ def print_report(
             f"Average Efficiency : "
             f"{statistics.average_efficiency:.2f}x"
         )
+
+    print()
+    print("Progress")
+    print("----------------------------")
+
+    if statistics.average_progress is None:
+        print("Average Progress   : N/A")
+    else:
+        print(
+            f"Average Progress   : "
+            f"{statistics.average_progress:.2f}%"
+        )
