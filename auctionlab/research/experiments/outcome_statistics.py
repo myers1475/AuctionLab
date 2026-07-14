@@ -19,6 +19,14 @@ class OutcomeStatistics:
     maximum_bars_to_target: int | None
 
 
+@dataclass(frozen=True)
+class TargetKindStatistics:
+    target_kind: str
+    total: int
+    reached: int
+    hit_rate: float
+
+
 def calculate(
     log: OutcomeLog,
 ) -> OutcomeStatistics:
@@ -27,7 +35,7 @@ def calculate(
 
     reached = sum(
         outcome.reached
-        for outcome in log.outcomes
+        for outcome in log
     )
 
     unreached = total - reached
@@ -40,7 +48,7 @@ def calculate(
 
     bars = [
         outcome.bars_to_outcome
-        for outcome in log.outcomes
+        for outcome in log
         if outcome.bars_to_outcome is not None
     ]
 
@@ -65,3 +73,30 @@ def calculate(
         average_bars_to_target=average_bars,
         maximum_bars_to_target=maximum_bars,
     )
+
+
+def calculate_by_target_kind(
+    log: OutcomeLog,
+) -> list[TargetKindStatistics]:
+
+    results: list[TargetKindStatistics] = []
+
+    for target_kind, outcomes in sorted(log.by_target_kind().items()):
+
+        total = len(outcomes)
+
+        reached = sum(
+            outcome.reached
+            for outcome in outcomes
+        )
+
+        results.append(
+            TargetKindStatistics(
+                target_kind=target_kind,
+                total=total,
+                reached=reached,
+                hit_rate=reached / total if total else 0.0,
+            )
+        )
+
+    return results

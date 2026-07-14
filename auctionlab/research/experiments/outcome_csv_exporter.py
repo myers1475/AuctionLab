@@ -2,6 +2,9 @@ import csv
 from pathlib import Path
 
 from auctionlab.research.experiments.outcome_log import OutcomeLog
+from auctionlab.research.experiments.outcome_statistics import (
+    calculate_by_target_kind,
+)
 
 
 def export_outcomes(
@@ -37,7 +40,7 @@ def export_outcomes(
             ]
         )
 
-        for outcome in log.outcomes:
+        for outcome in log:
 
             writer.writerow(
                 [
@@ -51,5 +54,35 @@ def export_outcomes(
                     outcome.percent_to_target,
                     outcome.maximum_favorable_excursion,
                     outcome.maximum_adverse_excursion,
+                ]
+            )
+
+    summary_filename = filename.replace(".csv", "_by_target.csv")
+
+    with open(
+        summary_filename,
+        "w",
+        newline="",
+    ) as f:
+
+        writer = csv.writer(f)
+
+        writer.writerow(
+            [
+                "target_kind",
+                "observations",
+                "targets_reached",
+                "hit_rate",
+            ]
+        )
+
+        for row in calculate_by_target_kind(log):
+
+            writer.writerow(
+                [
+                    row.target_kind,
+                    row.total,
+                    row.reached,
+                    row.hit_rate,
                 ]
             )
