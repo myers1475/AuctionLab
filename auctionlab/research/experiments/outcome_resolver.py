@@ -33,11 +33,11 @@ def resolve(
         tracker.update(snapshot.current_price)
 
         if is_high:
-            progress = snapshot.current_price - entry
-            reached = snapshot.current_price >= target
+            progress = snapshot.candle.high - entry
+            reached = snapshot.candle.high >= target
         else:
-            progress = entry - snapshot.current_price
-            reached = snapshot.current_price <= target
+            progress = entry - snapshot.candle.low
+            reached = snapshot.candle.low <= target
 
         if distance_to_target > 0:
             percent_to_target = min(
