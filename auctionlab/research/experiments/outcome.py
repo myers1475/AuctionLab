@@ -20,3 +20,17 @@ class Outcome:
 
     distance_to_target: float | None
     percent_to_target: float | None
+
+    @property
+    def efficiency(self) -> float | None:
+
+        if (
+            self.maximum_favorable_excursion is None
+            or self.distance_to_target in (None, 0)
+        ):
+            return None
+
+        return (
+            self.maximum_favorable_excursion
+            / self.distance_to_target
+        )
