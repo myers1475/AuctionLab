@@ -19,6 +19,7 @@ class OutcomeStatistics:
     maximum_bars_to_target: int | None
 
     average_efficiency: float | None
+    average_reward_risk: float | None
     average_progress: float | None
 
 
@@ -68,6 +69,12 @@ def calculate(
         if outcome.efficiency is not None
     ]
 
+    reward_risks = [
+        outcome.reward_risk
+        for outcome in log
+        if outcome.reward_risk is not None
+    ]
+
     progress = [
         outcome.percent_to_target
         for outcome in log
@@ -99,6 +106,11 @@ def calculate(
             if efficiencies
             else None
         ),
+        average_reward_risk=(
+            mean(reward_risks)
+            if reward_risks
+            else None
+        ),
         average_progress=(
             mean(progress)
             if progress
@@ -116,6 +128,7 @@ def calculate_by_target_kind(
     for target_kind, outcomes in sorted(log.by_target_kind().items()):
 
         total = len(outcomes)
+
         reached = sum(
             outcome.reached
             for outcome in outcomes
@@ -155,6 +168,7 @@ def calculate_by_distance(
         outcomes = buckets[bucket]
 
         total = len(outcomes)
+
         reached = sum(
             outcome.reached
             for outcome in outcomes
