@@ -20,3 +20,4 @@ def test_nearest_objective():
     assert nearest is not None
     assert nearest.kind == "Swing High"
     assert nearest.price == 110
+    assert nearest.distance == 2
