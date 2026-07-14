@@ -27,7 +27,10 @@ from auctionlab.research.experiments.outcome_csv_exporter import (
 )
 from auctionlab.research.experiments.outcome_log import OutcomeLog
 from auctionlab.research.experiments.outcome_resolver import resolve
-from auctionlab.research.experiments.outcome_statistics import calculate
+from auctionlab.research.experiments.outcome_statistics import (
+    calculate,
+    calculate_by_target_kind,
+)
 from auctionlab.research.experiments.outcome_report import print_report
 
 from auctionlab.upo.previous_day_builder import previous_day_levels
@@ -184,15 +187,28 @@ def main():
     )
 
     statistics = calculate(outcomes)
+    by_target = calculate_by_target_kind(outcomes)
 
     print()
     print("Experiment 001")
     print("----------------------------")
-    print(f"Observations : {len(log)}")
-    print("Observation CSV : output/experiment_001.csv")
-    print("Outcome CSV     : output/experiment_001_outcomes.csv")
+    print(f"Observations       : {len(log)}")
+    print("Observation CSV    : output/experiment_001.csv")
+    print("Outcome CSV        : output/experiment_001_outcomes.csv")
+    print("Target Summary CSV : output/experiment_001_outcomes_by_target.csv")
 
     print_report(statistics)
+
+    print()
+    print("Hit Rate by Target Type")
+    print("----------------------------")
+
+    for row in by_target:
+        print(
+            f"{row.target_kind:<20}"
+            f"{row.reached:>5}/{row.total:<5}"
+            f"{row.hit_rate:>8.2%}"
+        )
 
     if len(log):
 
