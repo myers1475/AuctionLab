@@ -29,6 +29,17 @@ class TargetKindStatistics:
     hit_rate: float
 
 
+@dataclass(frozen=True)
+class DistanceBucketStatistics:
+    minimum_distance: float
+    maximum_distance: float
+    total: int
+    reached: int
+    hit_rate: float
+    average_efficiency: float | None
+    average_bars_to_target: float | None
+
+
 def calculate(
     log: OutcomeLog,
 ) -> OutcomeStatistics:
@@ -111,6 +122,65 @@ def calculate_by_target_kind(
                 total=total,
                 reached=reached,
                 hit_rate=reached / total if total else 0.0,
+            )
+        )
+
+    return results
+
+
+def calculate_by_distance(
+    log: OutcomeLog,
+    bucket_size: float,
+) -> list[DistanceBucketStatistics]:
+
+    buckets: dict[int, list] = {}
+
+    for outcome in log:
+
+        if outcome.distance_to_target is None:
+            continue
+
+        bucket = int(outcome.distance_to_target // bucket_size)
+        buckets.setdefault(bucket, []).append(outcome)
+
+    results: list[DistanceBucketStatistics] = []
+
+    for bucket in sorted(buckets):
+
+        outcomes = buckets[bucket]
+
+        total = len(outcomes)
+        reached = sum(o.reached for o in outcomes)
+
+        efficiencies = [
+            o.efficiency
+            for o in outcomes
+            if o.efficiency is not None
+        ]
+
+        bars = [
+            o.bars_to_outcome
+            for o in outcomes
+            if o.bars_to_outcome is not None
+        ]
+
+        results.append(
+            DistanceBucketStatistics(
+                minimum_distance=bucket * bucket_size,
+                maximum_distance=(bucket + 1) * bucket_size,
+                total=total,
+                reached=reached,
+                hit_rate=reached / total if total else 0.0,
+                average_efficiency=(
+                    mean(efficiencies)
+                    if efficiencies
+                    else None
+                ),
+                average_bars_to_target=(
+                    mean(bars)
+                    if bars
+                    else None
+                ),
             )
         )
 
