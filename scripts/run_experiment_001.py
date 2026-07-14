@@ -139,6 +139,7 @@ def main():
 
         snapshot = build_snapshot(
             timestamp=bar.timestamp,
+            candle=bar,
             current_price=bar.close,
             objectives=objectives,
             active_upos=ActiveUPOs(
