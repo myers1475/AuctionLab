@@ -19,6 +19,7 @@ class OutcomeStatistics:
     maximum_bars_to_target: int | None
 
     average_efficiency: float | None
+    average_progress: float | None
 
 
 @dataclass(frozen=True)
@@ -46,12 +47,8 @@ def calculate(
 
     total = len(log)
 
-    reached = sum(
-        outcome.reached
-        for outcome in log
-    )
-
-    unreached = total - reached
+    reached = len(log.reached())
+    unreached = len(log.unreached())
 
     hit_rate = (
         reached / total
@@ -71,6 +68,12 @@ def calculate(
         if outcome.efficiency is not None
     ]
 
+    progress = [
+        outcome.percent_to_target
+        for outcome in log
+        if outcome.percent_to_target is not None
+    ]
+
     if bars:
         minimum_bars = min(bars)
         median_bars = median(bars)
@@ -82,12 +85,6 @@ def calculate(
         average_bars = None
         maximum_bars = None
 
-    average_efficiency = (
-        mean(efficiencies)
-        if efficiencies
-        else None
-    )
-
     return OutcomeStatistics(
         total=total,
         reached=reached,
@@ -97,7 +94,16 @@ def calculate(
         median_bars_to_target=median_bars,
         average_bars_to_target=average_bars,
         maximum_bars_to_target=maximum_bars,
-        average_efficiency=average_efficiency,
+        average_efficiency=(
+            mean(efficiencies)
+            if efficiencies
+            else None
+        ),
+        average_progress=(
+            mean(progress)
+            if progress
+            else None
+        ),
     )
 
 
@@ -110,7 +116,6 @@ def calculate_by_target_kind(
     for target_kind, outcomes in sorted(log.by_target_kind().items()):
 
         total = len(outcomes)
-
         reached = sum(
             outcome.reached
             for outcome in outcomes
@@ -150,18 +155,21 @@ def calculate_by_distance(
         outcomes = buckets[bucket]
 
         total = len(outcomes)
-        reached = sum(o.reached for o in outcomes)
+        reached = sum(
+            outcome.reached
+            for outcome in outcomes
+        )
 
         efficiencies = [
-            o.efficiency
-            for o in outcomes
-            if o.efficiency is not None
+            outcome.efficiency
+            for outcome in outcomes
+            if outcome.efficiency is not None
         ]
 
         bars = [
-            o.bars_to_outcome
-            for o in outcomes
-            if o.bars_to_outcome is not None
+            outcome.bars_to_outcome
+            for outcome in outcomes
+            if outcome.bars_to_outcome is not None
         ]
 
         results.append(

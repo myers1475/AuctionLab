@@ -16,6 +16,7 @@ def test_print_report():
         average_bars_to_target=4.5,
         maximum_bars_to_target=9,
         average_efficiency=1.25,
+        average_progress=92.5,
     )
 
     print_report(statistics)
