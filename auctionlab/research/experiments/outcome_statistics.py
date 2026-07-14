@@ -18,6 +18,8 @@ class OutcomeStatistics:
     average_bars_to_target: float | None
     maximum_bars_to_target: int | None
 
+    average_efficiency: float | None
+
 
 @dataclass(frozen=True)
 class TargetKindStatistics:
@@ -52,6 +54,12 @@ def calculate(
         if outcome.bars_to_outcome is not None
     ]
 
+    efficiencies = [
+        outcome.efficiency
+        for outcome in log
+        if outcome.efficiency is not None
+    ]
+
     if bars:
         minimum_bars = min(bars)
         median_bars = median(bars)
@@ -63,6 +71,12 @@ def calculate(
         average_bars = None
         maximum_bars = None
 
+    average_efficiency = (
+        mean(efficiencies)
+        if efficiencies
+        else None
+    )
+
     return OutcomeStatistics(
         total=total,
         reached=reached,
@@ -72,6 +86,7 @@ def calculate(
         median_bars_to_target=median_bars,
         average_bars_to_target=average_bars,
         maximum_bars_to_target=maximum_bars,
+        average_efficiency=average_efficiency,
     )
 
 

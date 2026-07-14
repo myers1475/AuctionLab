@@ -15,6 +15,7 @@ def test_print_report():
         median_bars_to_target=4,
         average_bars_to_target=4.5,
         maximum_bars_to_target=9,
+        average_efficiency=1.25,
     )
 
     print_report(statistics)
