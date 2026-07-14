@@ -13,7 +13,7 @@ from auctionlab.observation.swing_detector import detect_swings
 
 from auctionlab.inference.active_upos import ActiveUPOs
 from auctionlab.inference.control import Control
-from auctionlab.inference.nearest_objective import Objective
+from auctionlab.inference.objective_builder import build_objectives
 
 from auctionlab.replay.replay_engine import ReplayEngine
 from auctionlab.replay.snapshot_factory import build_snapshot
@@ -86,72 +86,22 @@ def main():
             if swing.index <= i
         )
 
-        objectives = [
-            Objective(
-                kind=swing.name,
-                price=swing.candle.high if swing.is_high else swing.candle.low,
-                source=swing,
-            )
-            for swing in visible_swings
-        ]
-
-        objectives.extend(
-            [
-                Objective(
-                    kind="Previous Day High",
-                    price=previous_day.high,
-                    source=previous_day,
-                ),
-                Objective(
-                    kind="Previous Day Low",
-                    price=previous_day.low,
-                    source=previous_day,
-                ),
-                Objective(
-                    kind="Previous Week High",
-                    price=previous_week.high,
-                    source=previous_week,
-                ),
-                Objective(
-                    kind="Previous Week Low",
-                    price=previous_week.low,
-                    source=previous_week,
-                ),
-                Objective(
-                    kind="Asia High",
-                    price=asia.high,
-                    source=asia,
-                ),
-                Objective(
-                    kind="Asia Low",
-                    price=asia.low,
-                    source=asia,
-                ),
-                Objective(
-                    kind="New York High",
-                    price=new_york.high,
-                    source=new_york,
-                ),
-                Objective(
-                    kind="New York Low",
-                    price=new_york.low,
-                    source=new_york,
-                ),
-            ]
+        active_upos = ActiveUPOs(
+            swings=visible_swings,
+            previous_days=(previous_day,),
+            previous_weeks=(previous_week,),
+            fvgs=(),
+            ifvgs=(),
         )
+
+        objectives = build_objectives(active_upos)
 
         snapshot = build_snapshot(
             timestamp=bar.timestamp,
             candle=bar,
             current_price=bar.close,
             objectives=objectives,
-            active_upos=ActiveUPOs(
-                swings=visible_swings,
-                previous_days=(previous_day,),
-                previous_weeks=(previous_week,),
-                fvgs=(),
-                ifvgs=(),
-            ),
+            active_upos=active_upos,
             control=Control.NEUTRAL,
         )
 
