@@ -18,3 +18,11 @@ class Observation:
     nearest_objective: Objective | None
 
     control: Control
+
+    @property
+    def distance_to_target(self) -> float | None:
+
+        if self.nearest_objective is None:
+            return None
+
+        return self.nearest_objective.distance
