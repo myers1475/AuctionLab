@@ -30,6 +30,22 @@ class OutcomeLog:
 
         return dict(groups)
 
+    def reached(self) -> list[Outcome]:
+
+        return [
+            outcome
+            for outcome in self._outcomes
+            if outcome.reached
+        ]
+
+    def unreached(self) -> list[Outcome]:
+
+        return [
+            outcome
+            for outcome in self._outcomes
+            if not outcome.reached
+        ]
+
     def __iter__(self):
 
         return iter(self._outcomes)
