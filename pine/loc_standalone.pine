@@ -1,0 +1,129 @@
+//@version=6
+indicator("LOC (Line of Control) - Standalone", overlay = true, max_labels_count = 50)
+
+// ============================================================================
+// INPUTS
+// ============================================================================
+showLOC     = input.bool(true, "Show LOC Line")
+locTF       = input.timeframe("60", "LOC Timeframe (e.g. 60=1h, 240=4h, D=daily - independent of chart TF)")
+bullColor   = input.color(color.lime, "Bull Color")
+bearColor   = input.color(color.red, "Bear Color")
+lineWidth   = input.int(2, "Line Thickness", minval = 1, maxval = 4)
+lineStyle   = input.string("Step", "Line Style", options = ["Step", "Smooth"])
+showTFLabel = input.bool(true, "Show LOC Timeframe Label")
+
+// ============================================================================
+// LOC STATE MACHINE (direction + price), evaluated on the designated timeframe
+// locPrice only updates on: (1) a true bias flip, or (2) a same-direction FVG
+// that follows a retracement attempt (an opposite-type FVG that didn't flip bias).
+// A same-direction FVG with no retracement in between is a pure continuation
+// of the current leg and is ignored.
+// ============================================================================
+f_locState() =>
+    var int direction = 0
+    var float locPrice = na
+    var bool retraced = false
+    bullGap = high[2] < low[0]
+    bearGap = low[2] > high[0]
+
+    if direction == -1 and bullGap
+        retraced := true
+    if direction == 1 and bearGap
+        retraced := true
+
+    if bullGap
+        if direction == 0
+            direction := 1
+            locPrice := low[1]
+            retraced := false
+        else if direction == -1 and close > locPrice
+            direction := 1
+            locPrice := low[1]
+            retraced := false
+        else if direction == 1 and retraced
+            locPrice := low[1]
+            retraced := false
+    if bearGap
+        if direction == 0
+            direction := -1
+            locPrice := high[1]
+            retraced := false
+        else if direction == 1 and close < locPrice
+            direction := -1
+            locPrice := high[1]
+            retraced := false
+        else if direction == -1 and retraced
+            locPrice := high[1]
+            retraced := false
+
+    [direction, locPrice]
+
+// Skip request.security entirely when locTF matches the chart's own timeframe -
+// requesting the same symbol/timeframe through security() adds an artificial 1-bar lag.
+sameTF = locTF == timeframe.period
+var int locDir = na
+var float locPrice = na
+if sameTF
+    [d, lp] = f_locState()
+    locDir := d
+    locPrice := lp
+else
+    [d, lp] = request.security(syminfo.tickerid, locTF, f_locState(), lookahead = barmerge.lookahead_off)
+    locDir := d
+    locPrice := lp
+
+// ============================================================================
+// DYNAMIC COLOR - green when bull, red when bear
+// ============================================================================
+locColor = locDir == 1 ? bullColor : locDir == -1 ? bearColor : color.gray
+
+// ============================================================================
+// PLOT
+// ============================================================================
+plotStyle = lineStyle == "Step" ? plot.style_stepline : plot.style_line
+plot(showLOC ? locPrice : na, title = "LOC", color = locColor, linewidth = lineWidth, style = plotStyle)
+
+// ============================================================================
+// TIMEFRAME LABEL - shows which locTF this instance is tracking
+// ============================================================================
+var label tfLabel = na
+
+f_tfDisplayName(tf) =>
+    string result = tf
+    if tf == "1"
+        result := "1m"
+    else if tf == "5"
+        result := "5m"
+    else if tf == "15"
+        result := "15m"
+    else if tf == "30"
+        result := "30m"
+    else if tf == "60"
+        result := "1H"
+    else if tf == "120"
+        result := "2H"
+    else if tf == "240"
+        result := "4H"
+    else if tf == "D" or tf == "1D"
+        result := "Daily"
+    else if tf == "W" or tf == "1W"
+        result := "Weekly"
+    else if tf == "M" or tf == "1M"
+        result := "Monthly"
+    result
+
+if barstate.islast
+    label.delete(tfLabel)
+    if showTFLabel and showLOC and not na(locPrice)
+        string dirText = locDir == 1 ? " (Bull)" : locDir == -1 ? " (Bear)" : ""
+        tfLabel := label.new(
+             x = time,
+             y = locPrice,
+             text = "LOC " + f_tfDisplayName(locTF) + dirText,
+             xloc = xloc.bar_time,
+             yloc = yloc.price,
+             style = locDir == 1 ? label.style_label_down : label.style_label_up,
+             color = color.new(locColor, 0),
+             textcolor = color.white,
+             size = size.normal
+        )
